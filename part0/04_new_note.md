@@ -34,3 +34,4 @@ sequenceDiagram
   deactivate server
 
   Note right of browser: Browser parses and renders the notes
+```
