@@ -1,5 +1,7 @@
 # full-stack-open
-My solutions for the exercises of University of Helsinki Full Stack Open Course.
+This repository contains my solutions for the exercises in the [Full Stack open](https://fullstackopen.com/en/) course offered by University of Helsinki.
+
+The Full Stack Open course teaches modern web development using JavaScript-based technologies such as React, Redux, Node.js, MongoDB, GraphQL, and TypeScript.
 
 ## Course content
 ### Part 0: Fundamentals of Web apps
