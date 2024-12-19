@@ -1,8 +1,8 @@
-const Header = (props) => {
+const Part = (props) => {
   return (
-    <div>
-      <h1>{props.course}</h1>
-    </div>
+    <p>
+      {props.part} {props.exercise}
+    </p>
   );
 };
 
@@ -16,14 +16,6 @@ const Content = (props) => {
   );
 };
 
-const Part = (props) => {
-  return (
-    <p>
-      {props.part} {props.exercise}
-    </p>
-  );
-};
-
 const Total = (props) => {
   return (
     <div>
@@ -31,6 +23,14 @@ const Total = (props) => {
         Number of exercises{" "}
         {props.exercise1 + props.exercise2 + props.exercise3}
       </p>
+    </div>
+  );
+};
+
+const Header = (props) => {
+  return (
+    <div>
+      <h1>{props.course}</h1>
     </div>
   );
 };
@@ -63,4 +63,5 @@ const App = () => {
     </>
   );
 };
+
 export default App;
