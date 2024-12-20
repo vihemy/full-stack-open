@@ -19,15 +19,17 @@ const App = () => {
   const [total, setTotal] = useState(0);
 
   const handleClick = (type) => () => {
-    if (type === "good") {
-      setGood(good + 1);
-      setTotal(total + 1);
-    } else if (type === "neutral") {
-      setNeutral(neutral + 1);
-      setTotal(total + 1);
-    } else if (type === "bad") {
-      setBad(bad + 1);
-      setTotal(total + 1);
+    setTotal(total + 1);
+    switch (type) {
+      case "good":
+        setGood(good + 1);
+        break;
+      case "neutral":
+        setNeutral(neutral + 1);
+        break;
+      case "bad":
+        setBad(bad + 1);
+        break;
     }
   };
 
@@ -44,6 +46,7 @@ const App = () => {
       <Display label="bad" value={bad} />
 
       <Display label="all" value={total} />
+      <Display label="average" value={total} />
     </div>
   );
 };
