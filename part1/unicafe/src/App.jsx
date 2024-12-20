@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const Header = ({ text }) => <h1>{text}</h1>;
+
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}> {text}</button>
+);
+
+const Display = ({ label, value }) => (
+  <p>
+    {label} {value}
+  </p>
+);
+
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const handleClick = (type) => () => {
+    if (type === "good") {
+      setGood(good + 1);
+    } else if (type === "neutral") {
+      setNeutral(neutral + 1);
+    } else if (type === "bad") {
+      setBad(bad + 1);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <Header text="give feedback" />
+      <Button handleClick={handleClick("good")} text="good" />
+      <Button handleClick={handleClick("neutral")} text="neutral" />
+      <Button handleClick={handleClick("bad")} text="bad" />
 
-export default App
+      <Header text="statistics" />
+      <Display label="good" value={good} />
+      <Display label="neutral" value={neutral} />
+      <Display label="bad" value={bad} />
+    </div>
+  );
+};
+
+export default App;
