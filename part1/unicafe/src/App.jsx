@@ -6,9 +6,9 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}> {text}</button>
 );
 
-const Display = ({ label, value }) => (
+const Display = ({ label, value, suffix = "" }) => (
   <p>
-    {label} {value}
+    {label} {value} {suffix}
   </p>
 );
 
@@ -17,20 +17,38 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
   const [total, setTotal] = useState(0);
+  const [average, setAverage] = useState(0);
+  const [percent, setPercent] = useState(0);
 
   const handleClick = (type) => () => {
-    setTotal(total + 1);
+    let newGood = good;
+    let newNeutral = neutral;
+    let newBad = bad;
+
     switch (type) {
       case "good":
-        setGood(good + 1);
+        newGood += 1;
         break;
       case "neutral":
-        setNeutral(neutral + 1);
+        newNeutral += 1;
         break;
       case "bad":
-        setBad(bad + 1);
+        newBad += 1;
+        break;
+      default:
         break;
     }
+
+    const newTotal = newGood + newNeutral + newBad;
+    const newAverage = (newGood - newBad) / newTotal;
+    const newPercent = (newGood / newTotal) * 100;
+
+    setGood(newGood);
+    setNeutral(newNeutral);
+    setBad(newBad);
+    setTotal(newTotal);
+    setAverage(newAverage);
+    setPercent(newPercent);
   };
 
   return (
@@ -46,7 +64,8 @@ const App = () => {
       <Display label="bad" value={bad} />
 
       <Display label="all" value={total} />
-      <Display label="average" value={total} />
+      <Display label="average" value={average} />
+      <Display label="positive" value={percent} suffix="%" />
     </div>
   );
 };
