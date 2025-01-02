@@ -13,9 +13,8 @@ const Display = ({ label, value, suffix = "" }) => (
 );
 
 const Statistics = ({ ratings, calculations }) => {
-  return (
+  return calculations.total ? (
     <div>
-      <Header text="statistics" />
       <Display label="good" value={ratings.good} />
       <Display label="neutral" value={ratings.neutral} />
       <Display label="bad" value={ratings.bad} />
@@ -23,6 +22,8 @@ const Statistics = ({ ratings, calculations }) => {
       <Display label="average" value={calculations.average} />
       <Display label="positive" value={calculations.percent} suffix="%" />
     </div>
+  ) : (
+    <div>No feedback given</div>
   );
 };
 
@@ -70,6 +71,7 @@ const App = () => {
       <Button handleClick={handleClick("good")} text="good" />
       <Button handleClick={handleClick("neutral")} text="neutral" />
       <Button handleClick={handleClick("bad")} text="bad" />
+      <Header text="statistics" />
       <Statistics ratings={ratings} calculations={calculations} />
     </div>
   );
