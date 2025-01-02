@@ -13,40 +13,36 @@ const Display = ({ label, value, suffix = "" }) => (
 );
 
 const App = () => {
-  const [stats, setStats] = useState({
+  const [ratings, setRatings] = useState({
     good: 0,
     neutral: 0,
     bad: 0,
-    total: 0,
-    average: 0,
-    percent: 0,
   });
 
   const handleClick = (type) => () => {
-    setStats((prevStats) => {
-      const newStats = { ...prevStats };
+    setRatings((prevRatings) => {
+      const newRatings = { ...prevRatings };
 
       switch (type) {
         case "good":
-          newStats.good += 1;
+          newRatings.good += 1;
           break;
         case "neutral":
-          newStats.neutral += 1;
+          newRatings.neutral += 1;
           break;
         case "bad":
-          newStats.bad += 1;
+          newRatings.bad += 1;
           break;
         default:
           break;
       }
-
-      newStats.total = newStats.good + newStats.neutral + newStats.bad;
-      newStats.average = (newStats.good - newStats.bad) / newStats.total;
-      newStats.percent = (newStats.good / newStats.total) * 100;
-
-      return newStats;
+      return newRatings;
     });
   };
+
+  const total = ratings.good + ratings.neutral + ratings.bad;
+  const average = total ? (ratings.good - ratings.bad) / total : 0;
+  const percent = total ? (ratings.good / total) * 100 : 0;
 
   return (
     <div>
@@ -56,13 +52,13 @@ const App = () => {
       <Button handleClick={handleClick("bad")} text="bad" />
 
       <Header text="statistics" />
-      <Display label="good" value={stats.good} />
-      <Display label="neutral" value={stats.neutral} />
-      <Display label="bad" value={stats.bad} />
+      <Display label="good" value={ratings.good} />
+      <Display label="neutral" value={ratings.neutral} />
+      <Display label="bad" value={ratings.bad} />
 
-      <Display label="all" value={stats.total} />
-      <Display label="average" value={stats.average} />
-      <Display label="positive" value={stats.percent} suffix="%" />
+      <Display label="all" value={total} />
+      <Display label="average" value={average} />
+      <Display label="positive" value={percent} suffix="%" />
     </div>
   );
 };
