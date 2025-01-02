@@ -12,6 +12,20 @@ const Display = ({ label, value, suffix = "" }) => (
   </p>
 );
 
+const Statistics = ({ ratings, total, average, percent }) => {
+  return (
+    <div>
+      <Header text="statistics" />
+      <Display label="good" value={ratings.good} />
+      <Display label="neutral" value={ratings.neutral} />
+      <Display label="bad" value={ratings.bad} />
+      <Display label="all" value={total} />
+      <Display label="average" value={average} />
+      <Display label="positive" value={percent} suffix="%" />
+    </div>
+  );
+};
+
 const App = () => {
   const [ratings, setRatings] = useState({
     good: 0,
@@ -50,15 +64,12 @@ const App = () => {
       <Button handleClick={handleClick("good")} text="good" />
       <Button handleClick={handleClick("neutral")} text="neutral" />
       <Button handleClick={handleClick("bad")} text="bad" />
-
-      <Header text="statistics" />
-      <Display label="good" value={ratings.good} />
-      <Display label="neutral" value={ratings.neutral} />
-      <Display label="bad" value={ratings.bad} />
-
-      <Display label="all" value={total} />
-      <Display label="average" value={average} />
-      <Display label="positive" value={percent} suffix="%" />
+      <Statistics
+        ratings={ratings}
+        total={total}
+        average={average}
+        percent={percent}
+      />
     </div>
   );
 };
