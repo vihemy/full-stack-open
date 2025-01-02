@@ -13,42 +13,39 @@ const Display = ({ label, value, suffix = "" }) => (
 );
 
 const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [average, setAverage] = useState(0);
-  const [percent, setPercent] = useState(0);
+  const [stats, setStats] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+    total: 0,
+    average: 0,
+    percent: 0,
+  });
 
   const handleClick = (type) => () => {
-    let newGood = good;
-    let newNeutral = neutral;
-    let newBad = bad;
+    setStats((prevStats) => {
+      const newStats = { ...prevStats };
 
-    switch (type) {
-      case "good":
-        newGood += 1;
-        break;
-      case "neutral":
-        newNeutral += 1;
-        break;
-      case "bad":
-        newBad += 1;
-        break;
-      default:
-        break;
-    }
+      switch (type) {
+        case "good":
+          newStats.good += 1;
+          break;
+        case "neutral":
+          newStats.neutral += 1;
+          break;
+        case "bad":
+          newStats.bad += 1;
+          break;
+        default:
+          break;
+      }
 
-    const newTotal = newGood + newNeutral + newBad;
-    const newAverage = (newGood - newBad) / newTotal;
-    const newPercent = (newGood / newTotal) * 100;
+      newStats.total = newStats.good + newStats.neutral + newStats.bad;
+      newStats.average = (newStats.good - newStats.bad) / newStats.total;
+      newStats.percent = (newStats.good / newStats.total) * 100;
 
-    setGood(newGood);
-    setNeutral(newNeutral);
-    setBad(newBad);
-    setTotal(newTotal);
-    setAverage(newAverage);
-    setPercent(newPercent);
+      return newStats;
+    });
   };
 
   return (
@@ -59,13 +56,13 @@ const App = () => {
       <Button handleClick={handleClick("bad")} text="bad" />
 
       <Header text="statistics" />
-      <Display label="good" value={good} />
-      <Display label="neutral" value={neutral} />
-      <Display label="bad" value={bad} />
+      <Display label="good" value={stats.good} />
+      <Display label="neutral" value={stats.neutral} />
+      <Display label="bad" value={stats.bad} />
 
-      <Display label="all" value={total} />
-      <Display label="average" value={average} />
-      <Display label="positive" value={percent} suffix="%" />
+      <Display label="all" value={stats.total} />
+      <Display label="average" value={stats.average} />
+      <Display label="positive" value={stats.percent} suffix="%" />
     </div>
   );
 };
