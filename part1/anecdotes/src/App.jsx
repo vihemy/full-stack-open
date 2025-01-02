@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const Button = ({ handleClick }) => (
-  <button onClick={handleClick}>next anecdote</button>
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>{text}</button>
 );
 
 const App = () => {
@@ -15,10 +15,10 @@ const App = () => {
     "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.",
     "The only way to go fast, is to go well.",
   ];
-
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0));
   const [selected, setSelected] = useState(0);
 
-  const handleClick = () => {
+  const nextAnecdote = () => {
     setSelected(getRandomInt(anecdotes.length - 1));
 
     function getRandomInt(max) {
@@ -30,10 +30,19 @@ const App = () => {
     }
   };
 
+  const vote = () => {
+    setPoints((prevPoints) => {
+      const newPoints = [...prevPoints];
+      newPoints[selected] += 1;
+      return newPoints;
+    });
+  };
+
   return (
     <div>
       <div>{anecdotes[selected]}</div>
-      <Button handleClick={handleClick} />
+      <Button handleClick={vote} text="vote" />
+      <Button handleClick={nextAnecdote} text="next anecdote" />
     </div>
   );
 };
