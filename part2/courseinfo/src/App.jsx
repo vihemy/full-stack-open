@@ -12,11 +12,22 @@ const Part = ({ part }) => {
 
 const Content = ({ parts }) => {
   return (
-      <div>
-        {parts.map((part) => (
-          <Part key={part.id} part={part} />
-        ))}
-      </div>
+    <div>
+      {parts.map((part) => (
+        <Part key={part.id} part={part} />
+      ))}
+    </div>
+  );
+};
+
+const Total = ({ parts }) => {
+  return (
+    <p>
+      <b>
+        total of {parts.reduce((sum, part) => sum + part.exercises, 0)}{" "}
+        exercises
+      </b>
+    </p>
   );
 };
 
@@ -25,6 +36,7 @@ const Course = ({ course }) => {
     <div>
       <Header name={course.name} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   );
 };
