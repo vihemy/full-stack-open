@@ -15,10 +15,7 @@ const App = () => {
       : createNumber();
 
     function createNumber() {
-      const numberObject = {
-        name: newName,
-      };
-      setPersons(persons.concat(numberObject));
+      setPersons([...persons, { name: newName }]);
       setNewName("");
     }
   };
