@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import PersonService from "./services/persons";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
@@ -11,8 +11,8 @@ const App = () => {
   const [newSearchText, setNewSearchText] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    PersonService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -27,16 +27,14 @@ const App = () => {
       : createContact();
 
     function createContact() {
-      axios
-        .post("http://localhost:3001/persons", {
-          name: newName,
-          number: newNumber,
-        })
-        .then((response) => {
-          setPersons(persons.concat(response.data));
-          setNewName("");
-          setNewNumber("");
-        });
+      PersonService.create({
+        name: newName,
+        number: newNumber,
+      }).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
 
