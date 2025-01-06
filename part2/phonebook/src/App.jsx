@@ -27,12 +27,16 @@ const App = () => {
       : createContact();
 
     function createContact() {
-      setPersons([
-        ...persons,
-        { name: newName, number: newNumber, id: persons.length + 1 },
-      ]);
-      setNewName("");
-      setNewNumber("");
+      axios
+        .post("http://localhost:3001/persons", {
+          name: newName,
+          number: newNumber,
+        })
+        .then((response) => {
+          setPersons(persons.concat(response.data));
+          setNewName("");
+          setNewNumber("");
+        });
     }
   };
 
