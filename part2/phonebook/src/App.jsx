@@ -9,23 +9,16 @@ const App = () => {
   const [newName, setNewName] = useState("Arto Hellas");
   const [newNumber, setNewNumber] = useState("88888888");
   const [newSearchText, setNewSearchText] = useState("");
-  const [showAll, setShowAll] = useState(false);
 
-  const hook = () => {
+  useEffect(() => {
     axios.get("http://localhost:3001/persons").then((response) => {
       setPersons(response.data);
     });
-  };
+  }, []);
 
-  useEffect(hook, []);
-
-  const personsToShow = showAll
-    ? persons
-    : persons.filter((person) =>
-        person.name
-          .toLocaleLowerCase()
-          .includes(newSearchText.toLocaleLowerCase())
-      );
+  const personsToShow = persons.filter((person) =>
+    person.name.toLocaleLowerCase().includes(newSearchText.toLocaleLowerCase())
+  );
 
   const addContact = (event) => {
     event.preventDefault();
