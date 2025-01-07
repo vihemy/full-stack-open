@@ -3,12 +3,14 @@ import personService from "./services/persons";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import Notification from "./components/Notification"
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newSearchText, setNewSearchText] = useState("");
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -41,8 +43,7 @@ const App = () => {
     ) {
       personService.update(id, changedPerson).then((returnedPerson) => {
         setPersons(persons.map((p) => (p.id === id ? returnedPerson : p)));
-        setNewName("");
-        setNewNumber("");
+        notifyAndReset(`Number of ${returnedPerson.name} has been updated`);
       });
     }
   }
@@ -55,8 +56,7 @@ const App = () => {
       })
       .then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
+        notifyAndReset(`${returnedPerson.name} has been added`);
       });
   }
 
@@ -76,13 +76,22 @@ const App = () => {
     if (window.confirm(`Delete ${personToRemove.name}?`)) {
       personService.remove(personToRemove.id).then((returnedPerson) => {
         setPersons(persons.filter((p) => p.id !== returnedPerson.id));
+        // notifyAndReset(`${returnedPerson.name} has been deleted`);
       });
     }
   };
 
+  function notifyAndReset(message) {
+    setNotification(message);
+    setTimeout(() => setNotification(null), 5000);
+    setNewName("");
+    setNewNumber("");
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Filter
         newSearchText={newSearchText}
         handleFilterChange={handleFilterChange}
