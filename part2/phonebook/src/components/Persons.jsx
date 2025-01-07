@@ -1,16 +1,17 @@
-const Contact = ({ person }) => {
+const Person = ({ person, removePerson }) => {
   return (
     <p>
       {person.name} {person.number}
+      <button onClick={() => removePerson(person)}>delete</button>
     </p>
   );
 };
 
-const Persons = ({ personsToShow }) => {
+const Persons = ({ personsToShow, removePerson }) => {
   return (
     <div>
       {personsToShow.map((person) => (
-        <Contact key={person.name} person={person} />
+        <Person key={person.name} person={person} removePerson={removePerson} />
       ))}
     </div>
   );

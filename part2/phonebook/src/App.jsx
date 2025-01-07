@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import PersonService from "./services/persons";
+import personService from "./services/persons";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("Arto Hellas");
-  const [newNumber, setNewNumber] = useState("88888888");
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
   const [newSearchText, setNewSearchText] = useState("");
 
   useEffect(() => {
-    PersonService.getAll().then((initialPersons) => {
+    personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
   }, []);
@@ -20,22 +20,28 @@ const App = () => {
     person.name.toLocaleLowerCase().includes(newSearchText.toLocaleLowerCase())
   );
 
-  const addContact = (event) => {
+  const addPerson = (event) => {
     event.preventDefault();
     persons.some((person) => person.name === newName)
       ? alert(`${newName} is already added to phonebook`)
-      : createContact();
+      : createPerson();
 
-    function createContact() {
-      PersonService.create({
-        name: newName,
-        number: newNumber,
-      }).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-      });
+    function createPerson() {
+      personService
+        .create({
+          name: newName,
+          number: newNumber,
+        })
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          setNewNumber("");
+        });
     }
+  };
+
+  const handleFilterChange = (event) => {
+    setNewSearchText(event.target.value);
   };
 
   const handleNameChange = (event) => {
@@ -46,8 +52,12 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
-  const handleFilterChange = (event) => {
-    setNewSearchText(event.target.value);
+  const removePerson = (personToRemove) => {
+    if (window.confirm(`Delete ${personToRemove.name}?`)) {
+      personService.remove(personToRemove.id).then((returnedPerson) => {
+        setPersons(persons.filter((p) => p.id !== returnedPerson.id));
+      });
+    }
   };
 
   return (
@@ -57,16 +67,16 @@ const App = () => {
         newSearchText={newSearchText}
         handleFilterChange={handleFilterChange}
       />
-      <h3>Add a new contact</h3>
+      <h3>Add a new person</h3>
       <PersonForm
-        addContact={addContact}
+        addPerson={addPerson}
         newName={newName}
         handleNameChange={handleNameChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} removePerson={removePerson} />
     </div>
   );
 };
