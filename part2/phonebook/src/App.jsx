@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newSearchText, setNewSearchText] = useState("");
   const [notification, setNotification] = useState(null);
+  const [notificationColor, setNotificationColor] = useState("green");
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -25,7 +26,6 @@ const App = () => {
   const handleAddPerson = (event) => {
     event.preventDefault();
     const person = persons.find((p) => p.name === newName);
-    console.log(person);
 
     if (person) {
       const changedPerson = { ...person, number: newNumber };
@@ -34,33 +34,6 @@ const App = () => {
       createPerson();
     }
   };
-
-  function updateNumber(id, changedPerson) {
-    if (
-      window.confirm(
-        `${changedPerson.name} is already added to phonebook, replace the old number with a new one?`
-      )
-    ) {
-      personService.update(id, changedPerson).then((returnedPerson) => {
-        setPersons(persons.map((p) => (p.id === id ? returnedPerson : p)));
-        notify(`Number of ${returnedPerson.name} has been updated`);
-        resetFields();
-      });
-    }
-  }
-
-  function createPerson() {
-    personService
-      .create({
-        name: newName,
-        number: newNumber,
-      })
-      .then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        notify(`${returnedPerson.name} has been added`);
-        resetFields();
-      });
-  }
 
   const handleFilterChange = (event) => {
     setNewSearchText(event.target.value);
@@ -82,8 +55,58 @@ const App = () => {
     }
   };
 
-  function notify(message) {
+  function updateNumber(id, changedPerson) {
+    if (
+      window.confirm(
+        `${changedPerson.name} is already added to phonebook, replace the old number with a new one?`
+      )
+    ) {
+      personService
+        .update(id, changedPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.map((p) => (p.id === id ? returnedPerson : p)));
+          notifySuccess(`Number of ${returnedPerson.name} has been updated`);
+          resetFields();
+        })
+        .catch(() => {
+          handleUpdateError(changedPerson);
+        });
+    }
+  }
+
+  function createPerson() {
+    personService
+      .create({
+        name: newName,
+        number: newNumber,
+      })
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        notifySuccess(`${returnedPerson.name} has been added`);
+        resetFields();
+      });
+  }
+
+  function handleUpdateError(changedPerson) {
+    notifyError(
+      `Information of ${changedPerson.name} has already been removed from server.`
+    );
+    personService
+      .getAll()
+      .then((returnedPersons) => setPersons(returnedPersons));
+  }
+
+  function notifySuccess(message) {
+    notify(message, "green");
+  }
+
+  function notifyError(message) {
+    notify(message, "red");
+  }
+
+  function notify(message, color) {
     setNotification(message);
+    setNotificationColor(color);
     setTimeout(() => setNotification(null), 5000);
   }
 
@@ -95,7 +118,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification message={notification} color={notificationColor} />
       <Filter
         newSearchText={newSearchText}
         handleFilterChange={handleFilterChange}
