@@ -3,7 +3,7 @@ import personService from "./services/persons";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
-import Notification from "./components/Notification"
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -43,7 +43,8 @@ const App = () => {
     ) {
       personService.update(id, changedPerson).then((returnedPerson) => {
         setPersons(persons.map((p) => (p.id === id ? returnedPerson : p)));
-        notifyAndReset(`Number of ${returnedPerson.name} has been updated`);
+        notify(`Number of ${returnedPerson.name} has been updated`);
+        resetFields();
       });
     }
   }
@@ -56,7 +57,8 @@ const App = () => {
       })
       .then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
-        notifyAndReset(`${returnedPerson.name} has been added`);
+        notify(`${returnedPerson.name} has been added`);
+        resetFields();
       });
   }
 
@@ -76,14 +78,16 @@ const App = () => {
     if (window.confirm(`Delete ${personToRemove.name}?`)) {
       personService.remove(personToRemove.id).then((returnedPerson) => {
         setPersons(persons.filter((p) => p.id !== returnedPerson.id));
-        // notifyAndReset(`${returnedPerson.name} has been deleted`);
       });
     }
   };
 
-  function notifyAndReset(message) {
+  function notify(message) {
     setNotification(message);
     setTimeout(() => setNotification(null), 5000);
+  }
+
+  function resetFields() {
     setNewName("");
     setNewNumber("");
   }
