@@ -20,25 +20,45 @@ const App = () => {
     person.name.toLocaleLowerCase().includes(newSearchText.toLocaleLowerCase())
   );
 
-  const addPerson = (event) => {
+  const handleAddPerson = (event) => {
     event.preventDefault();
-    persons.some((person) => person.name === newName)
-      ? alert(`${newName} is already added to phonebook`)
-      : createPerson();
+    const person = persons.find((p) => p.name === newName);
+    console.log(person);
 
-    function createPerson() {
-      personService
-        .create({
-          name: newName,
-          number: newNumber,
-        })
-        .then((returnedPerson) => {
-          setPersons(persons.concat(returnedPerson));
-          setNewName("");
-          setNewNumber("");
-        });
+    if (person) {
+      const changedPerson = { ...person, number: newNumber };
+      updateNumber(person.id, changedPerson);
+    } else {
+      createPerson();
     }
   };
+
+  function updateNumber(id, changedPerson) {
+    if (
+      window.confirm(
+        `${changedPerson.name} is already added to phonebook, replace the old number with a new one?`
+      )
+    ) {
+      personService.update(id, changedPerson).then((returnedPerson) => {
+        setPersons(persons.map((p) => (p.id === id ? returnedPerson : p)));
+        setNewName("");
+        setNewNumber("");
+      });
+    }
+  }
+
+  function createPerson() {
+    personService
+      .create({
+        name: newName,
+        number: newNumber,
+      })
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
+  }
 
   const handleFilterChange = (event) => {
     setNewSearchText(event.target.value);
@@ -52,7 +72,7 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
-  const removePerson = (personToRemove) => {
+  const handleRemovePerson = (personToRemove) => {
     if (window.confirm(`Delete ${personToRemove.name}?`)) {
       personService.remove(personToRemove.id).then((returnedPerson) => {
         setPersons(persons.filter((p) => p.id !== returnedPerson.id));
@@ -69,14 +89,17 @@ const App = () => {
       />
       <h3>Add a new person</h3>
       <PersonForm
-        addPerson={addPerson}
+        handleAddPerson={handleAddPerson}
         newName={newName}
         handleNameChange={handleNameChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow} removePerson={removePerson} />
+      <Persons
+        personsToShow={personsToShow}
+        handleRemovePerson={handleRemovePerson}
+      />
     </div>
   );
 };
