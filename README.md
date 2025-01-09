@@ -50,13 +50,13 @@ The Full Stack Open course teaches modern web development using JavaScript-based
 
 | Part           | Status      | Exercises |
 | :------------: | :---------: | :-------: |
-| [0](./part_0/) | Done        | 6/6       |
-| [1](./part_1/) | Done        | 14/14     |
-| [2](./part_2/) | Done        | 20/20     |
-| [3](./part_3/) | In Progress | 0/22      |
-| [4](./part_4/) | Unstarted   | 0/23      |
-| [5](./part_5/) | Unstarted   | 0/23      |
-| [6](./part_6/) | Unstarted   | 0/24      |
-| [7](./part_7/) | Unstarted   | 0/21      |
-| [8](./part_8/) | Unstarted   | 0/26      |
-| [9](./part_9/) | Unstarted   | 0/29      |
+| [0](./part0/) | Done        | 6/6       |
+| [1](./part1/) | Done        | 14/14     |
+| [2](./part2/) | Done        | 20/20     |
+| [3](./part3/) | In Progress | 0/22      |
+| [4](./part4/) | Unstarted   | 0/23      |
+| [5](./part5/) | Unstarted   | 0/23      |
+| [6](./part6/) | Unstarted   | 0/24      |
+| [7](./part7/) | Unstarted   | 0/21      |
+| [8](./part8/) | Unstarted   | 0/26      |
+| [9](./part9/) | Unstarted   | 0/29      |
