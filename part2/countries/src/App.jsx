@@ -1,5 +1,6 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
+import countryService from "./services/countries";
+import weatherService from "./services/weather";
 import Result from "./components/Result";
 
 const SearchBar = ({ newSearch, handleSearchChange }) => {
@@ -13,11 +14,10 @@ const SearchBar = ({ newSearch, handleSearchChange }) => {
 function App() {
   const [countries, setCountries] = useState(null);
   const [newSearch, setNewSearch] = useState("");
+  const [weather, setWeather] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
-      .then((response) => setCountries(response.data));
+    countryService.getAll().then((response) => setCountries(response));
   }, []);
 
   if (!countries) return null;
@@ -32,8 +32,15 @@ function App() {
   };
 
   const handleShowFullResult = (country) => {
-    setNewSearch(country.name.common)
+    setNewSearch(country.name.common);
+  };
 
+  const getWeather = (country) => {
+    return weatherService
+      .get(country.capitalInfo.latlng)
+      .then((returnedWeather) => {
+        setWeather(returnedWeather);
+      });
   };
 
   return (
@@ -45,6 +52,8 @@ function App() {
       <Result
         filteredCountries={countriesToShow}
         handleShowFullResult={handleShowFullResult}
+        getWeather={getWeather}
+        weather={weather}
       />
     </>
   );

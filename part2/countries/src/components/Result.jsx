@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const SingleLineResult = ({ country, handleShowFullResult }) => {
   return (
     <p>
@@ -7,7 +9,7 @@ const SingleLineResult = ({ country, handleShowFullResult }) => {
   );
 };
 
-const FullResult = ({ country }) => {
+const CountryDetails = ({ country }) => {
   return (
     <div>
       <h1>{country.name.common}</h1>
@@ -31,7 +33,40 @@ const FullResult = ({ country }) => {
   );
 };
 
-const Result = ({ filteredCountries, handleShowFullResult }) => {
+const WeatherDetails = ({ weather, getWeather, country }) => {
+  useEffect(() => {
+    getWeather(country);
+  }, [country, getWeather]);
+  if (!weather) return null;
+
+  return (
+    <div>
+      <h1>Weather in {country.capital}</h1>
+      <p>temperature: {weather.temperature_2m} Celcius</p>
+      <p>wind: {weather.wind_speed_10m} m/s</p>
+    </div>
+  );
+};
+
+const FullResult = ({ country, getWeather, weather }) => {
+  return (
+    <div>
+      <CountryDetails country={country} />
+      <WeatherDetails
+        weather={weather}
+        getWeather={getWeather}
+        country={country}
+      />
+    </div>
+  );
+};
+
+const Result = ({
+  filteredCountries,
+  handleShowFullResult,
+  getWeather,
+  weather,
+}) => {
   let content;
 
   switch (true) {
@@ -55,7 +90,13 @@ const Result = ({ filteredCountries, handleShowFullResult }) => {
       );
       break;
     default:
-      content = <FullResult country={filteredCountries[0]} />;
+      content = (
+        <FullResult
+          country={filteredCountries[0]}
+          getWeather={getWeather}
+          weather={weather}
+        />
+      );
   }
 
   return <div>{content}</div>;
