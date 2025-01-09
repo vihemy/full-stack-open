@@ -31,13 +31,21 @@ function App() {
     setNewSearch(event.target.value);
   };
 
+  const handleShowFullResult = (country) => {
+    setNewSearch(country.name.common)
+
+  };
+
   return (
     <>
       <SearchBar
         newSearch={newSearch}
         handleSearchChange={handleSearchChange}
       />
-      <Result filteredCountries={countriesToShow} />
+      <Result
+        filteredCountries={countriesToShow}
+        handleShowFullResult={handleShowFullResult}
+      />
     </>
   );
 }

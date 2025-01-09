@@ -1,5 +1,10 @@
-const SingleLineResult = ({ countryName }) => {
-  return <p>{countryName}</p>;
+const SingleLineResult = ({ country, handleShowFullResult }) => {
+  return (
+    <p>
+      {country.name.common}{" "}
+      <button onClick={() => handleShowFullResult(country)}>show</button>
+    </p>
+  );
 };
 
 const FullResult = ({ country }) => {
@@ -10,7 +15,6 @@ const FullResult = ({ country }) => {
       <p>area: {country.area}</p>
       <p>
         <b>languages:</b>
-        {console.log(country.languages)}
       </p>
       <ul>
         {Object.values(country.languages).map((l) => (
@@ -27,7 +31,7 @@ const FullResult = ({ country }) => {
   );
 };
 
-const Result = ({ filteredCountries }) => {
+const Result = ({ filteredCountries, handleShowFullResult }) => {
   let content;
 
   switch (true) {
@@ -41,7 +45,11 @@ const Result = ({ filteredCountries }) => {
       content = (
         <div>
           {filteredCountries.map((c) => (
-            <SingleLineResult key={c.name.common} countryName={c.name.common} />
+            <SingleLineResult
+              key={c.cca3}
+              country={c}
+              handleShowFullResult={handleShowFullResult}
+            />
           ))}
         </div>
       );
