@@ -69,7 +69,13 @@ app.post("/api/persons/", (request, response) => {
 
   if (!body.number) {
     return response.status(404).json({
-      error: "numbername missing",
+      error: "number missing",
+    });
+  }
+
+  if (persons.some((p) => p.name === body.name)) {
+    return response.status(409).json({
+      error: `entry with name "${body.name}" already exists.`,
     });
   }
 
