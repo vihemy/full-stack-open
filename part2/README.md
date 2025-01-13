@@ -1,4 +1,4 @@
-# Solutions to Exercises from Part 2 - Introduction to React
+# Solutions to Exercises from Part 2 -  Communicating with server
 
 This folder contains solutions for exercises 2.1 to 2.20 from part 2 of the course.
 
