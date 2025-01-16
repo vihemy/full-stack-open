@@ -89,21 +89,14 @@ app.post("/api/persons/", (request, response) => {
     });
   }
 
-  if (persons.some((p) => p.name === body.name)) {
-    return response.status(409).json({
-      error: `entry with name "${body.name}" already exists.`,
-    });
-  }
-
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  };
+  });
 
-  persons = persons.concat(person);
-
-  response.json(person);
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
 });
 
 const PORT = process.env.PORT || 3001;
