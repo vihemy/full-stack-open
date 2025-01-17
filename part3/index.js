@@ -64,6 +64,20 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
+app.put("/api/persons/:id", (request, response, next) => {
+  const body = request.body;
+  const person = {
+    name: body.name,
+    number: body.number,
+  };
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+  .then(updatedPerson => {
+    response.json(updatedPerson)
+  })
+  .catch(error => next(error))
+});
+
 app.delete("/api/persons/:id", (request, response) => {
   Person.findByIdAndDelete(request.params.id)
     .then((result) => {
@@ -71,11 +85,6 @@ app.delete("/api/persons/:id", (request, response) => {
     })
     .catch((error) => next(error));
 });
-
-const generateId = () => {
-  let randomNum = Math.floor(Math.random() * 100000);
-  return String(randomNum);
-};
 
 app.post("/api/persons/", (request, response) => {
   const body = request.body;
