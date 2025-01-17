@@ -10,12 +10,12 @@ morgan.token("body", function (req, res) {
 
 const app = express();
 
-app.use(cors());
 app.use(express.static("dist"));
 app.use(express.json());
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
+app.use(cors());
 
 // let persons = [
 //   {
@@ -100,6 +100,22 @@ app.post("/api/persons/", (request, response) => {
     response.json(savedPerson);
   });
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT);
