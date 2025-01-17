@@ -49,8 +49,8 @@ const App = () => {
 
   const handleRemovePerson = (personToRemove) => {
     if (window.confirm(`Delete ${personToRemove.name}?`)) {
-      personService.remove(personToRemove.id).then((returnedPerson) => {
-        setPersons(persons.filter((p) => p.id !== returnedPerson.id));
+      personService.remove(personToRemove.id).then(() => {
+        setPersons(persons.filter((p) => p.id !== personToRemove.id));
       });
     }
   };
