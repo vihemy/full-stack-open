@@ -68,8 +68,8 @@ const App = () => {
           notifySuccess(`Number of ${returnedPerson.name} has been updated`);
           resetFields();
         })
-        .catch(() => {
-          handleUpdateError(changedPerson);
+        .catch((error) => {
+          notifyError(error.response.data.error);
         });
     }
   }
@@ -84,6 +84,9 @@ const App = () => {
         setPersons(persons.concat(returnedPerson));
         notifySuccess(`${returnedPerson.name} has been added`);
         resetFields();
+      })
+      .catch((error) => {
+        notifyError(error.response.data.error);
       });
   }
 
