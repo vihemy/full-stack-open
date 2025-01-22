@@ -32,6 +32,7 @@ test('there are a correct amount of blogs ', async () => {
 
 test('unique identifier property is named "id"', async ()  => {
   const response = await api.get('/api/blogs')
+
   const getIdentifierKey = (array) => {
     if ('id' in array[0]) {
       return 'id'
@@ -40,6 +41,27 @@ test('unique identifier property is named "id"', async ()  => {
   }
 
   assert.strictEqual(getIdentifierKey(response.body), 'id')
+})
+
+test('a valid entry can be added', async () => {
+  const newBlog = {
+    title: 'new entry',
+    author: 'victor',
+    url: 'victor.com',
+    likes: 999
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+  const contents = blogsAtEnd.map(b => b.title)
+  assert(contents.includes('new entry'))
 })
 
 after(async () => {
