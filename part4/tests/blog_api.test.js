@@ -2,6 +2,7 @@ const { test, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const _ = require('lodash')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
@@ -27,6 +28,18 @@ test('there are a correct amount of blogs ', async () => {
   const response = await api.get('/api/blogs')
 
   assert.strictEqual(response.body.length, helper.initialBlogs.length)
+})
+
+test('unique identifier property is named "id"', async ()  => {
+  const response = await api.get('/api/blogs')
+  const getIdentifierKey = (array) => {
+    if ('id' in array[0]) {
+      return 'id'
+    } else if ('_id' in array[0]){
+      return '_id'}
+  }
+
+  assert.strictEqual(getIdentifierKey(response.body), 'id')
 })
 
 after(async () => {
