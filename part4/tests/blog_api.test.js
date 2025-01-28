@@ -65,7 +65,7 @@ test('a valid entry can be added', async () => {
 
 test('if missing likes-property defaults to 0', async () => {
   const incompleteEntry = {
-    title: 'new entry',
+    title: 'entry with no likes',
     author: 'victor',
     url: 'victor.com',
   }
@@ -75,10 +75,33 @@ test('if missing likes-property defaults to 0', async () => {
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
-  console.log(completedEntry.body)
-
-
   assert.strictEqual(completedEntry.body.likes, 0)
+})
+
+test('if missing title-property results in status code 400 Bad Request', async () => {
+  const incompleteEntry = {
+    author: 'Jones',
+    url: 'jones.nu',
+    likes: 250
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(incompleteEntry)
+    .expect(400)
+})
+
+test('if missing URL-property results in status code 400 Bad Request', async () => {
+  const incompleteEntry = {
+    title: 'entry with no URL',
+    author: 'Jones',
+    likes: 250
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(incompleteEntry)
+    .expect(400)
 })
 
 after(async () => {
