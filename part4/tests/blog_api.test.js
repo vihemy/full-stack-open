@@ -63,6 +63,24 @@ test('a valid entry can be added', async () => {
   assert(contents.includes('new entry'))
 })
 
+test('if missing likes-property defaults to 0', async () => {
+  const incompleteEntry = {
+    title: 'new entry',
+    author: 'victor',
+    url: 'victor.com',
+  }
+  const completedEntry = await api
+    .post('/api/blogs')
+    .send(incompleteEntry)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  console.log(completedEntry.body)
+
+
+  assert.strictEqual(completedEntry.body.likes, 0)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
