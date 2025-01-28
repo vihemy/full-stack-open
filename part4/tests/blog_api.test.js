@@ -112,6 +112,7 @@ test('if deleting a single blog post returns 204', async () => {
     .delete(`/api/blogs/${blogToDelete.id}`)
     .expect(204)
 })
+
 test('if a deleted post is removed from database', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
@@ -124,6 +125,31 @@ test('if a deleted post is removed from database', async () => {
 
   const ids = blogsAtEnd.map(r => r.id)
   assert(!ids.includes(blogToDelete.id))
+})
+
+
+test('a valid put will update an entry', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+
+  const updatedBlog = {
+    title: 'updated blog',
+    author: 'Mike',
+    url: 'mike.gov',
+    likes: 394
+  }
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const blogAfterUpdate = blogsAtEnd[0]
+  console.log(blogAfterUpdate, blogToUpdate)
+
+  assert(blogAfterUpdate.likes !== blogToUpdate.likes)
 })
 
 after(async () => {
