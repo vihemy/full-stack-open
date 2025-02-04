@@ -1,4 +1,4 @@
-const mongoose = require ('mongoose')
+const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   passwordHash: String
 })
 
-userSchema.set('toJson', {
+userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
