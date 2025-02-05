@@ -9,7 +9,7 @@ const helper = require('./test_helper')
 
 const Blog = require('../models/blog')
 
-describe('when entries already exists in databse', () => {
+describe('when entries already exists in database', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
     const blogObjects = helper.initialBlogs
