@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs/
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRpZ2VyIiwiaWQiOiI2N2EzNGQxNGZhMmRkNmM4MTRmYTg1Y2UiLCJpYXQiOjE3Mzg3NTU2MTN9.zcwzfHZ7TvYV6bIaniRI1G2jgYVazIUYNNiakRr0Qs8
 
 {
-"title": "test2",
+"title": "test6",
 "author": "12345678",
 "url": "www.test.dk",
 "likes": 8
