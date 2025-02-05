@@ -20,6 +20,12 @@ const initialBlogs = [
     author: '12345678',
     url: 'www.diosmio.dk',
     likes: 30
+  },
+  {
+    title: 'test4',
+    author: '12345678',
+    url: 'www.majs.dk',
+    likes: 9
   }
 ]
 
