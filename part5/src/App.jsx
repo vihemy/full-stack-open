@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Notification from "./components/Notification";
+import Togglable from './components/Togglable';
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -16,6 +17,7 @@ const App = () => {
   const [newUrl, setNewUrl] = useState('')
   const [notification, setNotification] = useState(null);
   const [notificationColor, setNotificationColor] = useState("green");
+  const blogFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
@@ -58,6 +60,7 @@ const App = () => {
   };
 
   const addBlog = async (event) => {
+    blogFormRef.current.toggleVisibility()
     event.preventDefault();
 
     const blogObject = {
@@ -104,21 +107,21 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification message={notification} color={notificationColor} />
-      <p> {user.name} logged in</p>
+      {user.name} logged in
       <button onClick={handleLogout}>
           logout
         </button>
-        <h2>create new</h2>
 
-        <BlogForm
-          addBlog={addBlog}
-          newTitle={newTitle}
-          setNewTitle={setNewTitle}
-          newAuthor={newAuthor}
-          setNewAuthor={setNewAuthor}
-          newUrl={newUrl}
-          setNewUrl={setNewUrl}/>
-        
+        <Togglable buttonLabel="new blog" ref={blogFormRef}>
+          <BlogForm
+            addBlog={addBlog}
+            newTitle={newTitle}
+            setNewTitle={setNewTitle}
+            newAuthor={newAuthor}
+            setNewAuthor={setNewAuthor}
+            newUrl={newUrl}
+            setNewUrl={setNewUrl}/>
+        </Togglable>
       <h2>current blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
