@@ -12,9 +12,6 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null)
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
   const [notification, setNotification] = useState(null);
   const [notificationColor, setNotificationColor] = useState("green");
   const blogFormRef = useRef()
@@ -59,22 +56,10 @@ const App = () => {
     }
   };
 
-  const addBlog = async (event) => {
+  const addBlog = async (blogObject) => {
     blogFormRef.current.toggleVisibility()
-    event.preventDefault();
-
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl,
-    };
-
     const returnedBlog = await blogService.create(blogObject);
     setBlogs(blogs.concat(returnedBlog))
-    notify(`a new blog '${newTitle}' by ${newAuthor} added`, 'green')
-    setNewTitle('');
-    setNewAuthor('');
-    setNewUrl('');
   }
 
   const handleLogout = () => {
@@ -109,19 +94,13 @@ const App = () => {
       <Notification message={notification} color={notificationColor} />
       {user.name} logged in
       <button onClick={handleLogout}>
-          logout
-        </button>
-
-        <Togglable buttonLabel="new blog" ref={blogFormRef}>
-          <BlogForm
-            addBlog={addBlog}
-            newTitle={newTitle}
-            setNewTitle={setNewTitle}
-            newAuthor={newAuthor}
-            setNewAuthor={setNewAuthor}
-            newUrl={newUrl}
-            setNewUrl={setNewUrl}/>
-        </Togglable>
+        logout
+      </button>
+      <Togglable buttonLabel="new blog" ref={blogFormRef}>
+        <BlogForm
+        createBlog={addBlog}
+        notify={notify}/>
+      </Togglable>
       <h2>current blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
