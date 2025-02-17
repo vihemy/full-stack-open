@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import Notification from "./components/Notification";
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -13,6 +14,8 @@ const App = () => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+  const [notification, setNotification] = useState(null);
+  const [notificationColor, setNotificationColor] = useState("green");
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
@@ -44,9 +47,12 @@ const App = () => {
       setUser(user);
       setUsername('');
       setPassword('');
-      console.log('login complete')
     } catch (exception) {
-      console.log('Wrong credentials');
+      if (exception.response && exception.response.status === 401){
+        notify('wrong username or password', 'red')
+      } else {
+        notify('an error occurred', 'red');
+      }
 
     }
   };
@@ -62,6 +68,7 @@ const App = () => {
 
     const returnedBlog = await blogService.create(blogObject);
     setBlogs(blogs.concat(returnedBlog))
+    notify(`a new blog '${newTitle}' by ${newAuthor} added`, 'green')
     setNewTitle('');
     setNewAuthor('');
     setNewUrl('');
@@ -72,10 +79,17 @@ const App = () => {
     setUser(null)
   }
 
+  function notify(message, color) {
+    setNotification(message);
+    setNotificationColor(color);
+    setTimeout(() => setNotification(null), 5000);
+  }
+
   if (user === null){
     return (
       <div>
         <h2>log in to application</h2>
+        <Notification message={notification} color={notificationColor} />
         <LoginForm
           handleLogin={handleLogin}
           username={username}
@@ -89,6 +103,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={notification} color={notificationColor} />
       <p> {user.name} logged in</p>
       <button onClick={handleLogout}>
           logout
