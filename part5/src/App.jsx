@@ -71,6 +71,14 @@ const App = () => {
     setBlogs(sortedBlogs)
   }
 
+  const removeBlog = async (blog) => {
+    if (window.confirm(`Delete ${blog.title} by ${blog.author}`)) {
+      blogService.remove(blog.id).then(() => {
+        setBlogs(blogs.filter((b) => b.id !== blog.id));
+      });
+    }
+  };
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteappUser')
     setUser(null)
@@ -115,7 +123,9 @@ const App = () => {
         <Blog
         key={blog.id}
         blog={blog}
-        handleLike={updateBlog} />
+        handleLike={updateBlog}
+        handleRemove={removeBlog}
+        user={user} />
       )}
     </div>
   )

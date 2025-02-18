@@ -1,6 +1,8 @@
 import { useState } from "react"
 
-const BlogDetails = ({ blog, handleLike }) => {
+const BlogDetails = ({ blog, handleLike, handleRemove, user }) => {
+  const showRemove = blog.user.username === user.username
+  
   return (
   <div>
     {blog.url}
@@ -8,11 +10,12 @@ const BlogDetails = ({ blog, handleLike }) => {
       likes {blog.likes} <button onClick={() => handleLike(blog.id, {...blog, likes: blog.likes + 1, user: blog.user.id})}>like</button>
     </div>
     {blog.user.name}
+    {showRemove && <button onClick={() => handleRemove(blog)}>remove</button>}
   </div>
   )
 };
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleRemove, user }) => {
   const blogStyle = {
     border: '1px solid black',
     marginBottom: '5px'
@@ -30,7 +33,11 @@ const Blog = ({ blog, handleLike }) => {
       <button onClick={toggleVisibility}>
         {showDetails ? 'hide' : 'view'}
       </button>
-      {showDetails && <BlogDetails blog={blog} handleLike={handleLike} />}
+      {showDetails && <BlogDetails
+      blog={blog}
+      handleLike={handleLike}
+      handleRemove={handleRemove}
+      user={user}/>}
     </div>
   );
 };
