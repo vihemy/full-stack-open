@@ -5,7 +5,7 @@ const BlogDetails = ({ blog, handleLike }) => {
   <div>
     {blog.url}
     <div>
-      likes {blog.likes} <button onClick={() => handleLike(blog.id, {...blog, likes: blog.likes + 1})}>like</button>
+      likes {blog.likes} <button onClick={() => handleLike(blog.id, {...blog, likes: blog.likes + 1, user: blog.user.id})}>like</button>
     </div>
     {blog.user.name}
   </div>
