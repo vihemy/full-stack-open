@@ -62,6 +62,11 @@ const App = () => {
     setBlogs(blogs.concat(returnedBlog))
   }
 
+  const updateBlog = async (id, blogObject) => {
+    const returnedBlog = await blogService.update(id, blogObject);
+    setBlogs(blogs.map(b => b.id !== id ? b : returnedBlog))
+  }
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteappUser')
     setUser(null)
@@ -103,7 +108,10 @@ const App = () => {
       </Togglable>
       <h2>current blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog
+        key={blog.id}
+        blog={blog}
+        handleLike={updateBlog} />
       )}
     </div>
   )
