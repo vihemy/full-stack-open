@@ -1,0 +1,15 @@
+PUT http://localhost:3003/api/blogs/67a204ed88fa47769c89c87d
+content-type: application/json
+
+
+{
+    "title": "test2",
+    "user": {
+      "username": "toby",
+      "name": "Tobias Holm",
+      "id": "67a1fa7b993b2970b6e4b381"
+    },
+    "url": "www.test.dk",
+    "likes": 1,
+    "id": "67a204ed88fa47769c89c87d"
+  }
