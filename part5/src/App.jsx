@@ -1,20 +1,20 @@
-import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-import BlogForm from './components/BlogForm'
-import Notification from "./components/Notification";
+import { useState, useEffect, useRef } from 'react';
+import Blog from './components/Blog';
+import BlogForm from './components/BlogForm';
+import Notification from './components/Notification';
 import Togglable from './components/Togglable';
-import LoginForm from './components/LoginForm'
-import blogService from './services/blogs'
-import loginService from './services/login'
+import LoginForm from './components/LoginForm';
+import blogService from './services/blogs';
+import loginService from './services/login';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
-  const [notificationColor, setNotificationColor] = useState("green");
-  const blogFormRef = useRef()
+  const [notificationColor, setNotificationColor] = useState('green');
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
@@ -26,12 +26,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>{
+    blogService.getAll().then(blogs => {
       const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
-      setBlogs( sortedBlogs )}
-    )
+      setBlogs( sortedBlogs );}
+    );
 
-  }, [])
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -50,7 +50,7 @@ const App = () => {
       setPassword('');
     } catch (exception) {
       if (exception.response && exception.response.status === 401){
-        notify('wrong username or password', 'red')
+        notify('wrong username or password', 'red');
       } else {
         notify('an error occurred', 'red');
       }
@@ -59,17 +59,17 @@ const App = () => {
   };
 
   const addBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
+    blogFormRef.current.toggleVisibility();
     const returnedBlog = await blogService.create(blogObject);
-    setBlogs(blogs.concat(returnedBlog))
-  }
+    setBlogs(blogs.concat(returnedBlog));
+  };
 
   const updateBlog = async (id, blogObject) => {
     const returnedBlog = await blogService.update(id, blogObject);
-    const updatedBlogs = blogs.map(b => b.id !== id ? b : returnedBlog)
-    const sortedBlogs = [... updatedBlogs].sort((a,b) => b.likes-a.likes)
-    setBlogs(sortedBlogs)
-  }
+    const updatedBlogs = blogs.map(b => b.id !== id ? b : returnedBlog);
+    const sortedBlogs = [... updatedBlogs].sort((a,b) => b.likes-a.likes);
+    setBlogs(sortedBlogs);
+  };
 
   const removeBlog = async (blog) => {
     if (window.confirm(`Delete ${blog.title} by ${blog.author}`)) {
@@ -80,9 +80,9 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedNoteappUser')
-    setUser(null)
-  }
+    window.localStorage.removeItem('loggedNoteappUser');
+    setUser(null);
+  };
 
   function notify(message, color) {
     setNotification(message);
@@ -102,7 +102,7 @@ const App = () => {
           password={password}
           setPassword={setPassword}/>
       </div>
-    )
+    );
   }
 
   return (
@@ -115,20 +115,20 @@ const App = () => {
       </button>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm
-        createBlog={addBlog}
-        notify={notify}/>
+          createBlog={addBlog}
+          notify={notify}/>
       </Togglable>
       <h2>current blogs</h2>
       {blogs.map(blog =>
         <Blog
-        key={blog.id}
-        blog={blog}
-        handleLike={updateBlog}
-        handleRemove={removeBlog}
-        user={user} />
+          key={blog.id}
+          blog={blog}
+          handleLike={updateBlog}
+          handleRemove={removeBlog}
+          user={user} />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
