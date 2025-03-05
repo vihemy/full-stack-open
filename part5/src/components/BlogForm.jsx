@@ -8,6 +8,7 @@ const InputField = ({ label, fieldContent, setFieldContent }) => {
         type="text"
         value={fieldContent}
         onChange={({ target }) => setFieldContent(target.value)}
+        placeholder={label}
       />
     </div>
   );
