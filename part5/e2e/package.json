@@ -2,7 +2,10 @@
   "name": "e2e",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
   "author": "Victor Hempel-Mydtskov",
   "license": "ISC",
   "description": "",
