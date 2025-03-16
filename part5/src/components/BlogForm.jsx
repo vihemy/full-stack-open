@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const InputField = ({ label, fieldContent, setFieldContent }) => {
+const InputField = ({ label, fieldContent, setFieldContent, testId }) => {
   return (
     <div>
       {label}:
@@ -9,6 +9,7 @@ const InputField = ({ label, fieldContent, setFieldContent }) => {
         value={fieldContent}
         onChange={({ target }) => setFieldContent(target.value)}
         placeholder={label}
+        data-testid={testId}
       />
     </div>
   );
@@ -27,7 +28,7 @@ const BlogForm = ({ createBlog, notify }) => {
       url: newUrl
     });
 
-    notify(`a new blog '${newTitle}' by ${newAuthor} added`, 'green');
+    notify(`a new blog "${newTitle}" by ${newAuthor} added`, 'green');
     setNewTitle('');
     setNewAuthor('');
     setNewUrl('');
@@ -37,9 +38,9 @@ const BlogForm = ({ createBlog, notify }) => {
     <div>
       <h2>new blog</h2>
       <form onSubmit={addBlog}>
-        <InputField label='title' fieldContent={newTitle} setFieldContent={setNewTitle} />
-        <InputField label='author' fieldContent={newAuthor} setFieldContent={setNewAuthor} />
-        <InputField label='url' fieldContent={newUrl} setFieldContent={setNewUrl} />
+        <InputField label='title' fieldContent={newTitle} setFieldContent={setNewTitle} testId='title' />
+        <InputField label='author' fieldContent={newAuthor} setFieldContent={setNewAuthor} testId='author' />
+        <InputField label='url' fieldContent={newUrl} setFieldContent={setNewUrl} testId='url' />
         <button type="submit">create</button>
       </form>
     </div>

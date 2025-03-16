@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-const { loginWith } = require('./helper')
+const { loginWith, createBlogWith } = require('./helper')
 
 describe('Blog app', () => {
   beforeEach(async ({ request, page }) => {
@@ -30,6 +30,23 @@ describe('Blog app', () => {
     test('succeeds with correct credentials', async ({ page }) => {
       await loginWith(page, 'Tiger', "abc123")
       await expect(page.getByText('Tigram Hamasalan logged in')).toBeVisible()
+    })
+  })
+
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+      await loginWith(page, 'Tiger', "abc123")
+    })
+  
+    test('a new blog can be created', async ({ page }) => {
+      createBlogWith(page, "This is a test", "Playwright", "www.testurl.com")
+      const errorDiv = await page.locator('.notification')
+      await expect(errorDiv).toContainText('a new blog "This is a test" by Playwright added')
+
+      const blogDiv = await page.locator('.blog')
+      await expect(blogDiv).toBeVisible()
+      await expect(blogDiv).toContainText("Playwright")
+      await expect(blogDiv).toContainText("This is a test")
     })
   })
 })
