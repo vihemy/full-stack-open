@@ -20,22 +20,21 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const body = request.body
+  const body = request.body;
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  if (!decodedToken.id){
-    return response.status(401).json({ error: 'token invalid' })
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' });
   }
-
 
   if (!body.title || !body.url) {
-    return response.status(400).end()
+    return response.status(400).end();
   }
   if (!body.likes) {
-    body.likes = 0
+    body.likes = 0;
   }
 
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById(decodedToken.id);
 
   const blog = new Blog({
     title: body.title,
@@ -43,14 +42,14 @@ blogsRouter.post('/', async (request, response) => {
     user: user.id,
     url: body.url,
     likes: body.likes
-  })
+  });
 
-  const savedBlog = await blog.save()
-  user.blogs = user.blogs.concat(savedBlog._id)
-  await user.save()
-  response.status(201).json(savedBlog)
-
-})
+  const savedBlog = await blog.save();
+  const populatedBlog = await savedBlog.populate('user', { username: 1, name: 1 });
+  user.blogs = user.blogs.concat(savedBlog._id);
+  await user.save();
+  response.status(201).json(populatedBlog);
+});
 
 blogsRouter.delete('/:id', async (request, response) => {
   await Blog.findByIdAndDelete(request.params.id)
@@ -59,9 +58,9 @@ blogsRouter.delete('/:id', async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
   const updatedBlog = await Blog
-  .findByIdAndUpdate(request.params.id, request.body, { new: true })
-  .populate('user', { name: 1 })
-  response.status(200).json(updatedBlog)
-})
+    .findByIdAndUpdate(request.params.id, request.body, { new: true })
+    .populate('user', { username: 1, name: 1 });
+  response.status(200).json(updatedBlog);
+});
 
 module.exports = blogsRouter
