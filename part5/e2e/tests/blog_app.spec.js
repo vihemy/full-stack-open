@@ -1,16 +1,10 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test');
-const { loginWith, createBlogWith } = require('./helper');
+const { loginWith, createBlogWith, resetDatabase, createUser } = require('./helper');
 
 describe('Blog app', () => {
   beforeEach(async ({ request, page }) => {
-    await request.post('/api/testing/reset');
-    await request.post('/api/users', {
-      data: {
-        username: 'Tiger',
-        name: 'Tigram Hamasalan',
-        password: 'abc123'
-      }
-    });
+    await resetDatabase(request);
+    await createUser(request, 'Tiger', 'Tigram Hamasalan', 'abc123');
     await page.goto('/');
   });
 
@@ -68,13 +62,7 @@ describe('Blog app', () => {
     });
 
     test('only creator can remove a blog', async ({ request, page }) => {
-      await request.post('/api/users', {
-        data: {
-          username: 'Gazelle',
-          name: 'Gaia Gibbernakker',
-          password: 'def456'
-        }
-      });
+      await createUser(request, 'Gazelle', 'Gaia Gibbernakker', 'def456');
 
       await page.getByRole('button', { name: 'logout' }).click();
       await loginWith(page, 'Gazelle', 'def456');
