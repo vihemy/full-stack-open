@@ -29,7 +29,7 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
   };
 
   return (
-    <div style={blogStyle} className='blog'>
+    <div style={blogStyle} className='blog' data-testid='blogPost'>
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>
         {showDetails ? 'hide' : 'view'}
