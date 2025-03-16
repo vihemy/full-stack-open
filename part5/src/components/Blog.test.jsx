@@ -9,14 +9,14 @@ const blog = {
   url: 'www.test.dk',
   likes: 8,
   user: {
-    username: "Tiger",
-    name: "Tigram Hamasalan"
+    username: 'Tiger',
+    name: 'Tigram Hamasalan'
   }
 };
 
 const userObject = {
-  username: "Tiger",
-  name: "Tigram Hamasalan"
+  username: 'Tiger',
+  name: 'Tigram Hamasalan'
 };
 
 test('renders title & author, not url & likes', () => {
@@ -49,10 +49,10 @@ test('clicking the button twice calls event handler twice', async () => {
   const user = userEvent.setup();
   const viewButton = screen.getByText('view');
   await user.click(viewButton);
-  
+
   const likeButton = screen.getByText('like');
   await user.click(likeButton);
   await user.click(likeButton);
 
   expect(mockHandler.mock.calls).toHaveLength(2);
-})
+});

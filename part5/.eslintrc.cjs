@@ -48,7 +48,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.jsx'], // Ensure ESLint looks at .jsx files
+      files: ['**/*.jsx', '**/*.js'],
       rules: {
 
       },
