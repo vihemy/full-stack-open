@@ -36,10 +36,10 @@ describe('Blog app', () => {
   describe('When logged in', () => {
     beforeEach(async ({ page }) => {
       await loginWith(page, 'Tiger', "abc123")
+      createBlogWith(page, "This is a test", "Playwright", "www.testurl.com")
     })
   
     test('a new blog can be created', async ({ page }) => {
-      createBlogWith(page, "This is a test", "Playwright", "www.testurl.com")
       const errorDiv = await page.locator('.notification')
       await expect(errorDiv).toContainText('a new blog "This is a test" by Playwright added')
 
@@ -47,6 +47,14 @@ describe('Blog app', () => {
       await expect(blogDiv).toBeVisible()
       await expect(blogDiv).toContainText("Playwright")
       await expect(blogDiv).toContainText("This is a test")
+    })
+
+    test('a newly created blog can be liked', async ({ page }) => {
+      await page.getByRole('button', { name: 'view' }).click()
+      const blogDetails = await page.getByTestId('blogDetails')
+      await expect(blogDetails).toContainText("likes 0")
+      await page.getByRole('button', { name: 'like' }).click()
+      await expect(blogDetails).toContainText("likes 1")
     })
   })
 })

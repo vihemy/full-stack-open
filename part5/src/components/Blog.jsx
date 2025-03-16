@@ -5,7 +5,7 @@ const BlogDetails = ({ blog, handleLike, handleRemove, user }) => {
   const showRemove = blog.user.username === user.username;
 
   return (
-    <div>
+    <div data-testid="blogDetails">
       {blog.url}
       <div>
       likes {blog.likes} <button onClick={() => handleLike(blog.id, { ...blog, likes: blog.likes + 1, user: blog.user.id })}>like</button>
