@@ -28,9 +28,8 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs => {
       const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
-      setBlogs( sortedBlogs );}
-    );
-
+      setBlogs(sortedBlogs);
+    });
   }, []);
 
   const handleLogin = async (event) => {
@@ -54,7 +53,6 @@ const App = () => {
       } else {
         notify('an error occurred', 'red');
       }
-
     }
   };
 
@@ -67,15 +65,14 @@ const App = () => {
   const updateBlog = async (id, blogObject) => {
     const returnedBlog = await blogService.update(id, blogObject);
     const updatedBlogs = blogs.map(b => b.id !== id ? b : returnedBlog);
-    const sortedBlogs = [... updatedBlogs].sort((a,b) => b.likes-a.likes);
+    const sortedBlogs = [...updatedBlogs].sort((a, b) => b.likes - a.likes);
     setBlogs(sortedBlogs);
   };
 
   const removeBlog = async (blog) => {
     if (window.confirm(`Delete ${blog.title} by ${blog.author}`)) {
-      blogService.remove(blog.id).then(() => {
-        setBlogs(blogs.filter((b) => b.id !== blog.id));
-      });
+      await blogService.remove(blog.id);
+      setBlogs(blogs.filter((b) => b.id !== blog.id));
     }
   };
 
