@@ -6,12 +6,14 @@ const BlogDetails = ({ blog, handleLike, handleRemove, user }) => {
 
   return (
     <div data-testid="blogDetails">
-      {blog.url}
-      <div>
+      <p>{blog.url}</p>
+      <p>
       likes {blog.likes} <button onClick={() => handleLike(blog.id, { ...blog, likes: blog.likes + 1, user: blog.user.id })}>like</button>
-      </div>
-      {blog.user.name}
-      {showRemove && <button onClick={() => handleRemove(blog)}>remove</button>}
+      </p>
+      <p>
+        {blog.user.name}
+        {showRemove && <button onClick={() => handleRemove(blog)}>remove</button>}
+      </p>
     </div>
   );
 };
