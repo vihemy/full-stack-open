@@ -5,10 +5,11 @@ const BlogDetails = ({ blog, handleLike, handleRemove, user }) => {
   const showRemove = blog.user.username === user.username;
 
   return (
-    <div data-testid="blogDetails">
+    <div data-testid="blog-details">
       <p>{blog.url}</p>
-      <p>
-      likes {blog.likes} <button onClick={() => handleLike(blog.id, { ...blog, likes: blog.likes + 1, user: blog.user.id })}>like</button>
+      <p> likes
+        <span data-testid="like-count">{blog.likes}</span>
+        <button onClick={() => handleLike(blog.id, { ...blog, likes: blog.likes + 1, user: blog.user.id })}>like</button>
       </p>
       <p>
         {blog.user.name}
@@ -31,7 +32,7 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
   };
 
   return (
-    <div style={blogStyle} className='blog' data-testid='blogPost'>
+    <div style={blogStyle} className='blog' data-testid='blog-post'>
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>
         {showDetails ? 'hide' : 'view'}
