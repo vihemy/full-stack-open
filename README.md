@@ -30,22 +30,6 @@ The Full Stack Open course teaches modern web development using JavaScript-based
 
 - Returning to the frontend, this part covers testing React code and implementing token-based authentication to enable user login.
 
-### Part 6: Advanced state management
-
-- Moving state management outside React components. Introduces Redux for app state, along with React's context and useReducer hooks, and React Query for server state management.
-
-### Part 7: React router, custom hooks, styling app with CSS and webpack
-
-- Introducing React Router for view navigation based on URL. Exploring additional CSS styling methods, configuring Webpack for custom toolchain setup, and defining custom hooks.
-
-### Part 8: GraphQL
-
-- This part of the course is about GraphQL, Facebook's alternative to REST for communication between browser and server.
-
-### Part 9: TypeScript
-
-- Focuses on TypeScript. Using previously introduced tools, features are built into an existing ecosystem, writing TypeScript with predefined linters and codebase.
-
 ## Course progress
 
 | Part           | Status      | Exercises |
