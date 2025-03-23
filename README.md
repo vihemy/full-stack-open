@@ -38,9 +38,5 @@ The Full Stack Open course teaches modern web development using JavaScript-based
 | [1](./part1/) | Done        | 14/14     |
 | [2](./part2/) | Done        | 20/20     |
 | [3](./part3/) | Done        | 22/22     |
-| [4](./part4/) | In progress | 19/23     |
+| [4](./part4/) | Done        | 20/23     |
 | [5](./part5/) | Done        | 23/23     |
-| [6](./part6/) | Unstarted   | 0/24      |
-| [7](./part7/) | Unstarted   | 0/21      |
-| [8](./part8/) | Unstarted   | 0/26      |
-| [9](./part9/) | Unstarted   | 0/29      |
