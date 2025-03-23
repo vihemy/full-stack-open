@@ -40,3 +40,6 @@ The Full Stack Open course teaches modern web development using JavaScript-based
 | [3](./part3/) | Done        | 22/22     |
 | [4](./part4/) | Done        | 20/23     |
 | [5](./part5/) | Done        | 23/23     |
+
+## Course Certificate
+![Course Certificate](./img/certificate-fullstack.png)
